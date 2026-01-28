@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+import json
+import os
 
 
 class Settings(BaseSettings):
@@ -14,6 +16,15 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        cors_env = os.getenv("CORS_ORIGINS")
+        if cors_env:
+            try:
+                self.CORS_ORIGINS = json.loads(cors_env)
+            except json.JSONDecodeError:
+                self.CORS_ORIGINS = [cors_env] if cors_env else self.CORS_ORIGINS
 
 
 settings = Settings()
