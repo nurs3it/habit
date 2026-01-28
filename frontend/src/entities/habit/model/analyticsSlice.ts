@@ -21,7 +21,7 @@ export const fetchHabitAnalytics = createAsyncThunk(
   }
 )
 
-export const fetchHeatmap = createAsyncThunk('analytics/fetchHeatmap', async (days = 365) => {
+export const fetchHeatmap = createAsyncThunk('analytics/fetchHeatmap', async (days: number = 365) => {
   const response = await api.get('/analytics/heatmap', { params: { days } })
   return response.data
 })

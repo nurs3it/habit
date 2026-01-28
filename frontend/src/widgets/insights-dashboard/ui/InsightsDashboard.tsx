@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/lib/hooks'
 import { fetchInsights } from '@entities/habit/model/analyticsSlice'
-import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card'
+import { Card, CardContent, CardTitle } from '@shared/ui/card'
 import { CalendarCheck2, Flame, Lightbulb, Sparkles } from 'lucide-react'
 import { Badge } from '@shared/ui/badge'
 
