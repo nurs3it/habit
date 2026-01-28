@@ -1,0 +1,48 @@
+---
+description: Tailwind CSS и Habitify стиль
+globs: frontend/**/*.{tsx,css}
+alwaysApply: false
+---
+
+# Styling Guidelines
+
+## Habitify iOS стиль
+
+- Использовать rounded-xl (12px) или rounded-2xl (16px) для карточек
+- Мягкие тени: shadow-sm
+- Плавные переходы: transition-all duration-200
+- Mobile-first: минимальные размеры touch-элементов 44x44px
+
+## Цветовая палитра
+
+- Использовать CSS переменные из index.css
+- primary для основных действий
+- muted для второстепенного текста
+- destructive для удаления/ошибок
+
+## Компоненты
+
+- Карточки: rounded-2xl, padding 6 (p-6)
+- Кнопки: rounded-xl, высота 11 (h-11)
+- Инпуты: rounded-xl, высота 11 (h-11)
+- Плавные анимации при взаимодействии
+
+## Адаптивность
+
+- Mobile-first подход
+- Использовать breakpoints: sm, md, lg
+- Нижняя навигация фиксирована для мобильных устройств
+
+## Примеры
+
+```tsx
+// ✅ GOOD - Habitify стиль
+<Card className="rounded-2xl p-6 shadow-sm transition-all duration-200">
+  <Button className="rounded-xl h-11 px-6">Click</Button>
+</Card>
+
+// ❌ BAD - не соответствует стилю
+<div className="rounded p-4">
+  <button className="rounded h-10">Click</button>
+</div>
+```

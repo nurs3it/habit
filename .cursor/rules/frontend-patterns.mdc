@@ -1,0 +1,54 @@
+---
+description: React/TypeScript паттерны и FSD архитектура
+globs: frontend/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Frontend Patterns
+
+## Feature-Sliced Design
+
+Следовать строгой FSD архитектуре:
+
+- `app/` - инициализация приложения, провайдеры, роутинг
+- `shared/` - переиспользуемые компоненты, утилиты, константы
+- `entities/` - бизнес-сущности с моделями и слайсами
+- `features/` - фичи приложения (создание, редактирование)
+- `widgets/` - композиция фич (экраны, сложные компоненты)
+
+## React компоненты
+
+- Использовать функциональные компоненты
+- Использовать хуки для состояния
+- Извлекать переиспользуемую логику в кастомные хуки
+- Использовать TypeScript для всех компонентов
+
+## Redux Toolkit
+
+- Использовать createSlice для слайсов
+- Использовать createAsyncThunk для асинхронных действий
+- Типизировать все состояния и действия
+- Использовать useAppDispatch и useAppSelector хуки
+
+## Стилизация
+
+- Использовать Tailwind CSS классы
+- Адаптировать компоненты под Habitify iOS стиль
+- Использовать cn() утилиту для условных классов
+- Mobile-first подход
+
+## Примеры
+
+```typescript
+// ✅ GOOD
+export function Component({ prop }: ComponentProps) {
+  const dispatch = useAppDispatch()
+  const data = useAppSelector((state) => state.data)
+  return <div className={cn('base-class', condition && 'conditional-class')} />
+}
+
+// ❌ BAD
+export const Component = (props) => {
+  return <div className="base-class conditional-class" />
+}
+```
