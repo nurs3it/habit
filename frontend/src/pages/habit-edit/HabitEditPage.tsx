@@ -87,7 +87,7 @@ export function HabitEditPage() {
   const [type, setType] = useState<'positive' | 'negative'>('positive')
   const [frequency, setFrequency] = useState<'daily' | 'weekly'>('daily')
   const [timeOfDay, setTimeOfDay] = useState<'morning' | 'afternoon' | 'evening' | ''>('')
-  const [color, setColor] = useState(HABIT_COLORS[0].value)
+  const [color, setColor] = useState<string>(HABIT_COLORS[0].value)
   const [category, setCategory] = useState('')
   const [scheduleMode, setScheduleMode] = useState<ScheduleMode>('all_time')
   const [scheduleStartDate, setScheduleStartDate] = useState('')
