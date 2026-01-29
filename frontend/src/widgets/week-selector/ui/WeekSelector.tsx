@@ -1,47 +1,55 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { format, startOfWeek, addWeeks, addDays, subDays, isSameDay, eachDayOfInterval, isToday, startOfMonth, endOfMonth, addMonths, subMonths, addYears, subYears } from 'date-fns'
 import { enUS } from 'date-fns/locale'
-import { ChevronLeft, ChevronRight, Calendar, Flame } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react'
+import Lottie from 'lottie-react'
 import { Button } from '@shared/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog'
 import { cn } from '@shared/lib/utils'
-import { isHabitScheduledOn } from '@shared/lib/schedule'
-
-interface Habit {
-  id: string
-  archived: boolean
-  schedule?: Record<string, unknown> | null
-}
-
-interface Checkin {
-  habit_id: string
-  date: string
-  completed: boolean
-}
 
 interface WeekSelectorProps {
   selectedDate: Date
   onDateChange: (date: Date) => void
-  habits?: Habit[]
-  checkins?: Checkin[]
+  dayCompletion?: Record<string, boolean>
 }
 
-export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins = [] }: WeekSelectorProps) {
+export function WeekSelector({ selectedDate, onDateChange, dayCompletion = {} }: WeekSelectorProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [calendarView, setCalendarView] = useState<'days' | 'months' | 'years'>('days')
   const [calendarMonth, setCalendarMonth] = useState(selectedDate)
+  const [fireAnimation, setFireAnimation] = useState<object | null>(null)
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 })
   const weekDays = eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 6) })
 
+  useEffect(() => {
+    const loadFireAnimation = async () => {
+      const urls = [
+        '/animations/fire.json',
+        'https://assets10.lottiefiles.com/packages/lf_890cb942-1177-11ee-847c-73f9b2630e61.json',
+        'https://lottie.host/embed_legacy/890cb942-1177-11ee-847c-73f9b2630e61.json',
+      ]
+      
+      for (const url of urls) {
+        try {
+          const res = await fetch(url)
+          if (res.ok) {
+            const data = await res.json()
+            if (data.v && data.layers) {
+              setFireAnimation(data)
+              return
+            }
+          }
+        } catch {
+          continue
+        }
+      }
+    }
+    loadFireAnimation()
+  }, [])
+
   const isDayComplete = (day: Date) => {
-    const scheduledHabits = habits.filter((h) => !h.archived && isHabitScheduledOn(h.schedule, day))
-    if (scheduledHabits.length === 0) return false
-    
     const dayStr = format(day, 'yyyy-MM-dd')
-    const dayCheckins = checkins.filter((c) => c.date === dayStr && c.completed)
-    const completedHabitIds = new Set(dayCheckins.map((c) => c.habit_id))
-    
-    return scheduledHabits.every((habit) => completedHabitIds.has(habit.id))
+    return Boolean(dayCompletion[dayStr])
   }
 
   const handlePreviousWeek = () => {
@@ -142,36 +150,43 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
               onClick={() => handleDayClick(day)}
               className={cn(
                 'flex-1 flex flex-col items-center justify-center gap-1 py-3 px-1 rounded-[10px] transition-colors relative min-h-[52px] active:opacity-90',
+                isComplete && 'overflow-hidden',
                 isSelected
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'hover:bg-accent',
-                isCurrentDay && !isSelected && 'bg-accent/60'
+                isCurrentDay && !isSelected && !isComplete && 'bg-accent/60'
               )}
             >
+              {isComplete && fireAnimation && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[10px]">
+                  <Lottie
+                    animationData={fireAnimation}
+                    loop
+                    className="absolute inset-0"
+                    style={{ transform: 'scale(1.8)', transformOrigin: 'center' }}
+                  />
+                </div>
+              )}
               <span
                 className={cn(
-                  'text-[11px] font-semibold tracking-wide',
-                  isSelected ? 'text-primary-foreground/90' : 'text-muted-foreground'
+                  'relative z-10 text-[11px] font-semibold tracking-wide',
+                  isSelected ? 'text-primary-foreground/90' : 'text-muted-foreground',
+                  isComplete && !isSelected && 'text-foreground drop-shadow-sm'
                 )}
               >
                 {format(day, 'EEE', { locale: enUS })}
               </span>
-              <span className={cn(
-                'text-lg font-semibold leading-none',
-                isSelected ? 'text-primary-foreground' : 'text-foreground'
-              )}>
+              <span
+                className={cn(
+                  'relative z-10 text-lg font-semibold leading-none',
+                  isSelected ? 'text-primary-foreground' : 'text-foreground',
+                  isComplete && !isSelected && 'drop-shadow-sm'
+                )}
+              >
                 {format(day, 'd')}
               </span>
               {isCurrentDay && !isSelected && (
-                <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary" />
-              )}
-              {isComplete && (
-                <Flame
-                  className={cn(
-                    'w-3.5 h-3.5 absolute top-1.5 right-1.5 animate-flame',
-                    isSelected ? 'text-orange-200' : 'text-orange-500'
-                  )}
-                />
+                <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary z-10" />
               )}
             </button>
           )

@@ -15,6 +15,7 @@ export interface Checkin {
 interface CheckinsState {
   checkins: Checkin[]
   todayCheckins: Checkin[]
+  dayCompletion: Record<string, boolean>
   loading: boolean
   error: string | null
 }
@@ -22,6 +23,7 @@ interface CheckinsState {
 const initialState: CheckinsState = {
   checkins: [],
   todayCheckins: [],
+  dayCompletion: {},
   loading: false,
   error: null,
 }
@@ -38,6 +40,14 @@ export const fetchTodayCheckins = createAsyncThunk('checkins/fetchToday', async 
   const response = await api.get('/checkins/today')
   return response.data
 })
+
+export const fetchDayCompletion = createAsyncThunk(
+  'checkins/fetchDayCompletion',
+  async (params: { start_date: string; end_date: string }) => {
+    const response = await api.get<Record<string, boolean>>('/checkins/day-completion', { params })
+    return { range: params, data: response.data }
+  }
+)
 
 export const createCheckin = createAsyncThunk(
   'checkins/create',
@@ -93,6 +103,9 @@ const checkinsSlice = createSlice({
       .addCase(deleteCheckin.fulfilled, (state, action) => {
         state.checkins = state.checkins.filter((c) => c.id !== action.payload)
         state.todayCheckins = state.todayCheckins.filter((c) => c.id !== action.payload)
+      })
+      .addCase(fetchDayCompletion.fulfilled, (state, action) => {
+        state.dayCompletion = { ...state.dayCompletion, ...action.payload.data }
       })
   },
 })

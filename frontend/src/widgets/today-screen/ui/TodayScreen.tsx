@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/lib/hooks'
 import { fetchHabits } from '@entities/habit/model/habitsSlice'
-import { fetchCheckins, createCheckin, deleteCheckin } from '@entities/checkin/model/checkinsSlice'
+import { fetchCheckins, fetchDayCompletion, createCheckin, deleteCheckin } from '@entities/checkin/model/checkinsSlice'
 import { Card } from '@shared/ui/card'
 import { Badge } from '@shared/ui/badge'
 import { Check, Flame } from 'lucide-react'
@@ -14,7 +14,7 @@ import { isHabitScheduledOn } from '@shared/lib/schedule'
 export function TodayScreen() {
   const dispatch = useAppDispatch()
   const { habits } = useAppSelector((state) => state.habits)
-  const { checkins } = useAppSelector((state) => state.checkins)
+  const { checkins, dayCompletion } = useAppSelector((state) => state.checkins)
   const [selectedDate, setSelectedDate] = useState(new Date())
 
   useEffect(() => {
@@ -28,6 +28,7 @@ export function TodayScreen() {
     const startDate = format(weekStart, 'yyyy-MM-dd')
     const endDate = format(weekEnd, 'yyyy-MM-dd')
     dispatch(fetchCheckins({ start_date: startDate, end_date: endDate }))
+    dispatch(fetchDayCompletion({ start_date: startDate, end_date: endDate }))
   }, [dispatch, selectedDate])
 
   const handleToggleCheckin = async (habitId: string) => {
@@ -49,7 +50,12 @@ export function TodayScreen() {
         })
       )
     }
-    dispatch(fetchCheckins({ start_date: dateStr, end_date: dateStr }))
+    const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 })
+    const weekEnd = addDays(weekStart, 6)
+    const startDate = format(weekStart, 'yyyy-MM-dd')
+    const endDate = format(weekEnd, 'yyyy-MM-dd')
+    dispatch(fetchCheckins({ start_date: startDate, end_date: endDate }))
+    dispatch(fetchDayCompletion({ start_date: startDate, end_date: endDate }))
   }
 
   const getCheckinStatus = (habitId: string) => {
@@ -165,8 +171,7 @@ export function TodayScreen() {
       <WeekSelector
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
-        habits={activeHabits}
-        checkins={checkins}
+        dayCompletion={dayCompletion}
       />
 
       <div className="space-y-6">

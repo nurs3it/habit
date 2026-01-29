@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from typing import List, Optional
-from datetime import date, datetime
+from typing import List, Optional, Dict
+from datetime import date, datetime, timedelta
 from bson import ObjectId
 from app.core.database import get_database
 from app.core.dependencies import get_current_user
@@ -84,6 +84,46 @@ async def create_checkin(
         skipped=checkin.get("skipped", False),
         created_at=checkin.get("created_at", datetime.utcnow()),
     )
+
+
+@router.get("/day-completion", response_model=Dict[str, bool])
+async def get_day_completion(
+    start_date: date,
+    end_date: date,
+    current_user: User = Depends(get_current_user),
+):
+    db = get_database()
+    user_id = ObjectId(current_user.id)
+    habits = await db.habits.find({"user_id": user_id, "archived": {"$ne": True}}).to_list(length=500)
+    start_dt = datetime.combine(start_date, datetime.min.time())
+    end_dt = datetime.combine(end_date, datetime.max.time())
+    checkins = await db.checkins.find({
+        "user_id": user_id,
+        "completed": True,
+        "date": {"$gte": start_dt, "$lte": end_dt},
+    }).to_list(length=5000)
+    checkins_by_date: Dict[str, set] = {}
+    for c in checkins:
+        d = datetime_to_date(c["date"])
+        key = d.isoformat() if hasattr(d, "isoformat") else str(d)
+        if key not in checkins_by_date:
+            checkins_by_date[key] = set()
+        checkins_by_date[key].add(str(c["habit_id"]))
+    result = {}
+    d = start_date
+    while d <= end_date:
+        key = d.isoformat() if hasattr(d, "isoformat") else str(d)
+        scheduled_habit_ids = []
+        for h in habits:
+            if is_scheduled_on(h.get("schedule"), d):
+                scheduled_habit_ids.append(str(h["_id"]))
+        if not scheduled_habit_ids:
+            result[key] = False
+        else:
+            completed_ids = checkins_by_date.get(key) or set()
+            result[key] = all(hid in completed_ids for hid in scheduled_habit_ids)
+        d = d + timedelta(days=1)
+    return result
 
 
 @router.get("/", response_model=List[CheckinResponse])
