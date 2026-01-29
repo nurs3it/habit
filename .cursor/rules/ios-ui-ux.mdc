@@ -1,0 +1,43 @@
+---
+description: UI/UX, elements, components and concepts must follow iOS style (Human Interface Guidelines)
+globs: frontend/**/*.{tsx,css}
+alwaysApply: false
+---
+
+# iOS UI/UX Style
+
+All UI/UX, visual elements, components and interaction concepts must follow **Apple Human Interface Guidelines** and iOS design language.
+
+## Visual Style
+
+- **Corners**: Use consistent border radius (e.g. 12px cards, 10px controls). Prefer `rounded-xl` / `rounded-2xl` for cards and sheets.
+- **Shadows**: Subtle, soft shadows (`shadow-sm`). Avoid heavy or multiple shadows.
+- **Typography**: Clear hierarchy, readable sizes. Prefer system-like font weights (e.g. semibold for titles, regular for body).
+- **Spacing**: Generous padding, consistent gaps. Use 4/8/16/24px rhythm where possible.
+- **Touch targets**: Minimum 44x44pt for interactive elements (buttons, list rows, toggles).
+
+## Components
+
+- **Lists**: Row-based layout, optional chevrons, clear separation. Use list-style grouping where appropriate.
+- **Buttons**: Filled primary for main action, bordered or text for secondary. Rounded corners, adequate padding.
+- **Forms**: Inset-style inputs, clear labels, inline validation. Use switches for booleans, not checkboxes where it fits iOS patterns.
+- **Sheets/Modals**: Bottom sheet style for mobile flows when appropriate. Rounded top corners, drag indicator.
+- **Navigation**: Tab bar at bottom for main sections. Navigation bar with back/close where needed. Large titles where it fits.
+
+## Interactions
+
+- **Transitions**: Smooth, short (200–300ms). Prefer opacity and transform over layout jumps.
+- **Feedback**: Immediate visual feedback on tap (opacity, scale). Haptics concept where relevant.
+- **Gestures**: Respect swipe-back for navigation when applicable. Avoid custom gestures that conflict with system.
+
+## Concepts
+
+- **Clarity**: One primary action per screen/section. Clear labels and states.
+- **Deference**: Content first; chrome and controls support, don’t compete.
+- **Depth**: Use layers (cards, sheets, overlays) to show hierarchy, not decoration.
+
+## Don’t
+
+- Don’t use Material Design–specific patterns (e.g. FAB as primary action, bottom nav with different semantics).
+- Don’t use sharp corners or heavy shadows that don’t match iOS.
+- Don’t make touch targets smaller than 44pt or cluster controls too tightly.

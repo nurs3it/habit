@@ -84,6 +84,18 @@
   .pb-keyboard {
     padding-bottom: max(env(safe-area-inset-bottom), 1rem);
   }
+  .section-header {
+    @apply text-[13px] font-semibold text-muted-foreground uppercase tracking-wide px-1 pb-2 pt-4;
+  }
+  .section-header:first-child {
+    @apply pt-0;
+  }
+  .list-group {
+    @apply rounded-[10px] overflow-hidden border border-border/80 bg-card;
+  }
+  .list-row {
+    @apply flex items-center justify-between min-h-[44px] px-4 py-3 bg-background text-[17px] border-b border-border/80 last:border-b-0;
+  }
 }
 
 @layer utilities {

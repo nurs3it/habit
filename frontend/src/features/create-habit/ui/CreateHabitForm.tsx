@@ -75,13 +75,6 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
           schedule: buildSchedule(),
         })
       ).unwrap()
-      setName('')
-      setScheduleMode('all_time')
-      setScheduleStartDate('')
-      setScheduleEndDate('')
-      setScheduleWeekdays([])
-      setScheduleSpecificDates([])
-      setSpecificDateInput('')
       onSuccess?.()
     } catch (error) {
       console.error('Failed to create habit:', error)
@@ -90,9 +83,9 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
 
   return (
     <div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" id="create-habit-form">
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium">
+            <label htmlFor="name" className="text-[15px] font-medium">
               Habit name
             </label>
             <Input
@@ -104,7 +97,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">Type</label>
+            <label className="text-[15px] font-medium">Type</label>
             <div className="flex gap-2">
               <Button
                 type="button"
@@ -125,21 +118,21 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
             </div>
           </div>
           <div className="space-y-2">
-            <label htmlFor="frequency" className="text-sm font-medium">
+            <label htmlFor="frequency" className="text-[15px] font-medium">
               Frequency
             </label>
             <select
               id="frequency"
               value={frequency}
               onChange={(e) => setFrequency(e.target.value)}
-              className="flex h-11 w-full rounded-xl border border-input bg-background px-4 py-2 text-sm"
+              className="flex h-11 min-h-[44px] w-full rounded-[10px] border border-input bg-background px-4 py-2 text-[17px]"
             >
               <option value="daily">Daily</option>
               <option value="weekly">Weekly</option>
             </select>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">Time of day</label>
+            <label className="text-[15px] font-medium">Time of day</label>
             <div className="flex gap-2">
               <Button
                 type="button"
@@ -168,7 +161,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">Color</label>
+            <label className="text-[15px] font-medium">Color</label>
             <div className="flex gap-2 flex-wrap">
               {HABIT_COLORS.map((c) => (
                 <button
@@ -184,14 +177,14 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
             </div>
           </div>
           <div className="space-y-2">
-            <label htmlFor="category" className="text-sm font-medium">
+            <label htmlFor="category" className="text-[15px] font-medium">
               Category (optional)
             </label>
             <select
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="flex h-11 w-full rounded-xl border border-input bg-background px-4 py-2 text-sm"
+              className="flex h-11 min-h-[44px] w-full rounded-[10px] border border-input bg-background px-4 py-2 text-[17px]"
             >
               <option value="">None</option>
               {HABIT_CATEGORIES.map((cat) => (
@@ -203,11 +196,11 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Schedule</label>
+            <label className="text-[15px] font-medium">Schedule</label>
             <select
               value={scheduleMode}
               onChange={(e) => setScheduleMode(e.target.value as any)}
-              className="flex h-11 w-full rounded-xl border border-input bg-background px-4 py-2 text-sm"
+              className="flex h-11 min-h-[44px] w-full rounded-[10px] border border-input bg-background px-4 py-2 text-[17px]"
             >
               <option value="all_time">All time</option>
               <option value="date_range">Date range</option>
@@ -220,7 +213,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
           {scheduleMode === 'date_range' && (
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Start date</label>
+                <label className="text-[15px] font-medium">Start date</label>
                 <Input
                   type="date"
                   min={todayStr}
@@ -229,7 +222,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">End date</label>
+                <label className="text-[15px] font-medium">End date</label>
                 <Input
                   type="date"
                   min={scheduleStartDate || todayStr}
@@ -242,7 +235,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
 
           {scheduleMode === 'weekdays' && (
             <div className="space-y-2">
-              <label className="text-sm font-medium">Days of week</label>
+              <label className="text-[15px] font-medium">Days of week</label>
               <div className="grid grid-cols-7 gap-2">
                 {[
                   { id: 1, label: 'Mon' },
@@ -257,7 +250,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
                     key={d.id}
                     type="button"
                     onClick={() => toggleWeekday(d.id)}
-                    className={`h-10 rounded-xl border text-xs font-semibold transition-all ${
+                    className={`h-10 min-h-[44px] rounded-[10px] border border-input text-[15px] font-medium transition-colors active:opacity-90 ${
                       scheduleWeekdays.includes(d.id) ? 'bg-primary text-primary-foreground border-primary' : 'bg-background'
                     }`}
                   >
@@ -270,7 +263,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
 
           {scheduleMode === 'specific_dates' && (
             <div className="space-y-2">
-              <label className="text-sm font-medium">Dates</label>
+              <label className="text-[15px] font-medium">Dates</label>
               <div className="flex gap-2">
                 <Input
                   type="date"
@@ -289,7 +282,7 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
                       key={d}
                       type="button"
                       onClick={() => removeSpecificDate(d)}
-                      className="px-3 py-1 rounded-full border text-xs text-muted-foreground hover:bg-accent transition-colors"
+                      className="px-3 py-1.5 rounded-[10px] border border-border/80 text-[13px] text-muted-foreground hover:bg-accent/50 active:bg-accent transition-colors"
                     >
                       {d}
                     </button>
@@ -300,13 +293,10 @@ export function CreateHabitForm({ onSuccess }: CreateHabitFormProps) {
           )}
 
           {scheduleMode === 'days_21' && (
-            <div className="text-sm text-muted-foreground">
+            <div className="text-[15px] text-muted-foreground">
               This habit will be scheduled for the next 21 days starting today.
             </div>
           )}
-          <Button type="submit" className="w-full">
-            Create habit
-          </Button>
         </form>
     </div>
   )

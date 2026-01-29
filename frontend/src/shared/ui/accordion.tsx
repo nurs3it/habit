@@ -57,7 +57,7 @@ export function AccordionTrigger({ children, className, ...props }: AccordionTri
       type="button"
       onClick={() => setOpen(!open)}
       className={cn(
-        'flex w-full items-center justify-between p-4 font-medium transition-all hover:bg-accent [&[data-state=open]>svg]:rotate-180',
+        'flex w-full items-center justify-between min-h-[44px] px-4 py-3 text-[17px] font-medium transition-colors hover:bg-accent/50 active:bg-accent [&[data-state=open]>svg]:rotate-180',
         className
       )}
       data-state={open ? 'open' : 'closed'}

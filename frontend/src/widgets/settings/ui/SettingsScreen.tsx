@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@shared/lib/hooks'
 import { logout } from '@entities/user/model/userSlice'
 import { setTheme } from '@shared/lib/uiSlice'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card'
 import { Button } from '@shared/ui/button'
 import { Switch } from '@shared/ui/switch'
 import { Moon, Sun, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { cn } from '@shared/lib/utils'
 
 export function SettingsScreen() {
   const dispatch = useAppDispatch()
@@ -19,48 +19,52 @@ export function SettingsScreen() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
+        <h1 className="text-[28px] font-bold tracking-tight">Settings</h1>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Appearance</CardTitle>
-          <CardDescription>Customize the look and feel of the app</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-              <span>Dark mode</span>
+
+      <section className="space-y-2">
+        <h2 className="section-header">Appearance</h2>
+        <div className="list-group">
+          <div className="list-row">
+            <div className="flex items-center gap-3">
+              {theme === 'dark' ? (
+                <Moon className="w-5 h-5 text-muted-foreground" />
+              ) : (
+                <Sun className="w-5 h-5 text-muted-foreground" />
+              )}
+              <span className="text-[17px] font-medium">Dark mode</span>
             </div>
             <Switch
               checked={theme === 'dark'}
               onCheckedChange={(checked) => dispatch(setTheme(checked ? 'dark' : 'light'))}
             />
           </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Account</CardTitle>
-          <CardDescription>Manage your account settings</CardDescription>
-        </CardHeader>
-        <CardContent>
+        </div>
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="section-header">Account</h2>
+        <div className="list-group">
           {user && (
-            <div className="space-y-2 mb-4">
-              <p className="text-sm">
-                <span className="text-muted-foreground">Email: </span>
-                {user.email}
-              </p>
+            <div className="list-row">
+              <span className="text-muted-foreground text-[15px]">Email</span>
+              <span className="text-[17px] font-medium truncate max-w-[200px]">{user.email}</span>
             </div>
           )}
-          <Button variant="destructive" onClick={handleLogout} className="w-full">
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign out
-          </Button>
-        </CardContent>
-      </Card>
+        </div>
+        <Button
+          variant="destructive"
+          onClick={handleLogout}
+          className={cn(
+            'w-full h-12 text-[17px] font-semibold rounded-[10px] mt-2'
+          )}
+        >
+          <LogOut className="w-5 h-5 mr-2" />
+          Sign out
+        </Button>
+      </section>
     </div>
   )
 }

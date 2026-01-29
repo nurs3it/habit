@@ -41,28 +41,28 @@ export function InsightsDashboard() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-3xl font-bold">Insights</h1>
-        <p className="text-muted-foreground mt-1">Discover patterns in your habits</p>
+        <h1 className="text-[28px] font-bold tracking-tight">Insights</h1>
+        <p className="text-[15px] text-muted-foreground mt-1">Discover patterns in your habits</p>
       </div>
       {error ? (
-        <Card className="rounded-2xl border bg-card shadow-sm">
+        <Card className="rounded-[10px] border border-border/80 bg-card">
           <CardContent className="py-10 text-center text-muted-foreground">
             <p>Failed to load insights.</p>
             <p className="mt-2 text-xs">{error}</p>
           </CardContent>
         </Card>
       ) : loading ? (
-        <Card className="rounded-2xl border bg-card shadow-sm">
-          <CardContent className="py-10 text-center text-muted-foreground">
+        <Card className="rounded-[10px] border border-border/80 bg-card">
+          <CardContent className="py-10 text-center text-muted-foreground text-[15px]">
             <p>Loading insights...</p>
           </CardContent>
         </Card>
       ) : (
         <>
           {insights.length === 0 ? (
-            <Card className="rounded-2xl border bg-card shadow-sm">
+            <Card className="rounded-[10px] border border-border/80 bg-card">
               <CardContent className="py-10 text-center text-muted-foreground">
-                <div className="mx-auto w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                <div className="mx-auto w-12 h-12 rounded-[10px] bg-primary/10 text-primary flex items-center justify-center">
                   <Flame className="w-6 h-6" />
                 </div>
                 <p className="mt-4 font-medium text-foreground">No insights yet</p>
@@ -74,12 +74,12 @@ export function InsightsDashboard() {
           ) : (
             <div className="space-y-3">
               {insights.map((insight: any, index: number) => (
-                <Card key={index} className="rounded-2xl border bg-card shadow-sm overflow-hidden">
+                <Card key={index} className="rounded-[10px] border border-border/80 bg-card overflow-hidden">
                   <CardContent className="p-0">
                     <div className="p-4">
                       <div className="flex items-start gap-3">
                         <div
-                          className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${insightUi(
+                          className={`w-11 h-11 rounded-[10px] flex items-center justify-center border ${insightUi(
                             insight.type
                           ).ring}`}
                         >

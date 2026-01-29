@@ -6,6 +6,7 @@ import os
 
 class Settings(BaseSettings):
     MONGODB_URL: str = "mongodb://admin:password@localhost:27017/?authSource=admin"
+    MONGODB_USE_TLS: bool = False
     SECRET_KEY: str = "your-secret-key-change-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30

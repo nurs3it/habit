@@ -4,6 +4,7 @@ import { store } from './store'
 import { useEffect } from 'react'
 import { setTheme } from '@shared/lib/uiSlice'
 import { fetchCurrentUser } from '@entities/user/model/userSlice'
+import { ToastProvider } from '@shared/ui/toast'
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>
@@ -27,7 +28,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>
   )

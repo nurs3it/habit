@@ -13,8 +13,11 @@ export function BottomNavigation() {
   const location = useLocation()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50">
-      <div className="flex justify-around items-center h-16 max-w-md mx-auto">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/80 bg-background/95 backdrop-blur-xl"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
+      <div className="flex justify-around items-center h-14 min-h-[44px] max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = location.pathname === item.path
@@ -23,12 +26,12 @@ export function BottomNavigation() {
               key={item.path}
               to={item.path}
               className={cn(
-                'flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors',
+                'flex flex-col items-center justify-center gap-0.5 flex-1 h-full min-w-[44px] transition-colors active:opacity-70',
                 isActive ? 'text-primary' : 'text-muted-foreground'
               )}
             >
-              <Icon className="w-5 h-5" />
-              <span className="text-xs font-medium">{item.label}</span>
+              <Icon className="w-6 h-6" />
+              <span className="text-[11px] font-medium">{item.label}</span>
             </Link>
           )
         })}

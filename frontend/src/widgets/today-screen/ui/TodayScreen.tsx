@@ -88,7 +88,7 @@ export function TodayScreen() {
     return (
       <Card
         key={habit.id}
-        className={`p-4 transition-all duration-200 ${
+        className={`p-4 transition-colors duration-150 rounded-[10px] ${
           isCompleted ? 'bg-primary/5 border-primary/20' : ''
         }`}
       >
@@ -96,10 +96,10 @@ export function TodayScreen() {
           <button
             onClick={() => handleToggleCheckin(habit.id)}
             disabled={isFutureDay}
-            className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200 ${
+            className={`w-12 h-12 min-w-[44px] min-h-[44px] rounded-[10px] flex items-center justify-center transition-colors duration-150 active:opacity-90 ${
               isCompleted
-                ? 'bg-primary text-primary-foreground scale-105'
-                : 'border-2 border-input hover:border-primary'
+                ? 'bg-primary text-primary-foreground'
+                : 'border-2 border-input hover:border-primary/50'
             } ${isFutureDay ? 'opacity-40 cursor-not-allowed hover:border-input' : ''}`}
           >
             {isCompleted ? <Check className="w-6 h-6" /> : null}
@@ -147,15 +147,15 @@ export function TodayScreen() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{getTitle()}</h1>
-          <p className="text-muted-foreground mt-1">{format(selectedDate, 'EEEE, MMMM d', { locale: enUS })}</p>
+          <h1 className="text-[28px] font-bold tracking-tight">{getTitle()}</h1>
+          <p className="text-[15px] text-muted-foreground mt-1">{format(selectedDate, 'EEEE, MMMM d', { locale: enUS })}</p>
         </div>
         {!isToday(selectedDate) && (
           <Button
             variant="outline"
             size="sm"
             onClick={handleTodayClick}
-            className="rounded-full"
+            className="rounded-[10px]"
           >
             Today
           </Button>
@@ -178,75 +178,75 @@ export function TodayScreen() {
           <>
             {habitsByTimeOfDay.morning.length > 0 && (
               <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-muted-foreground px-1">
+                <h2 className="section-header">
                   {timeOfDayLabels.morning}
                 </h2>
                 {splitByFrequency(habitsByTimeOfDay.morning).daily.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Daily</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Daily</h3>
                     {splitByFrequency(habitsByTimeOfDay.morning).daily.map(renderHabitCard)}
                   </div>
                 )}
                 {splitByFrequency(habitsByTimeOfDay.morning).weekly.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Weekly</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Weekly</h3>
                     {splitByFrequency(habitsByTimeOfDay.morning).weekly.map(renderHabitCard)}
                   </div>
                 )}
               </div>
             )}
             {habitsByTimeOfDay.afternoon.length > 0 && (
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-muted-foreground px-1">
-                  {timeOfDayLabels.afternoon}
-                </h2>
-                {splitByFrequency(habitsByTimeOfDay.afternoon).daily.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="section-header">
+                {timeOfDayLabels.afternoon}
+              </h2>
+              {splitByFrequency(habitsByTimeOfDay.afternoon).daily.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Daily</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Daily</h3>
                     {splitByFrequency(habitsByTimeOfDay.afternoon).daily.map(renderHabitCard)}
                   </div>
                 )}
                 {splitByFrequency(habitsByTimeOfDay.afternoon).weekly.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Weekly</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Weekly</h3>
                     {splitByFrequency(habitsByTimeOfDay.afternoon).weekly.map(renderHabitCard)}
                   </div>
                 )}
               </div>
             )}
             {habitsByTimeOfDay.evening.length > 0 && (
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-muted-foreground px-1">
-                  {timeOfDayLabels.evening}
-                </h2>
-                {splitByFrequency(habitsByTimeOfDay.evening).daily.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="section-header">
+                {timeOfDayLabels.evening}
+              </h2>
+              {splitByFrequency(habitsByTimeOfDay.evening).daily.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Daily</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Daily</h3>
                     {splitByFrequency(habitsByTimeOfDay.evening).daily.map(renderHabitCard)}
                   </div>
                 )}
                 {splitByFrequency(habitsByTimeOfDay.evening).weekly.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Weekly</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Weekly</h3>
                     {splitByFrequency(habitsByTimeOfDay.evening).weekly.map(renderHabitCard)}
                   </div>
                 )}
               </div>
             )}
             {habitsByTimeOfDay.none.length > 0 && (
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-muted-foreground px-1">
-                  {timeOfDayLabels.none}
-                </h2>
-                {splitByFrequency(habitsByTimeOfDay.none).daily.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="section-header">
+                {timeOfDayLabels.none}
+              </h2>
+              {splitByFrequency(habitsByTimeOfDay.none).daily.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Daily</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Daily</h3>
                     {splitByFrequency(habitsByTimeOfDay.none).daily.map(renderHabitCard)}
                   </div>
                 )}
                 {splitByFrequency(habitsByTimeOfDay.none).weekly.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground px-1">Weekly</h3>
+                    <h3 className="text-[13px] font-semibold text-muted-foreground px-1">Weekly</h3>
                     {splitByFrequency(habitsByTimeOfDay.none).weekly.map(renderHabitCard)}
                   </div>
                 )}

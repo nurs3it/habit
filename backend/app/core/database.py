@@ -9,10 +9,10 @@ database = None
 
 async def connect_to_mongo():
     global client, database
-    client = AsyncIOMotorClient(
-        settings.MONGODB_URL,
-        tlsCAFile=certifi.where(),
-    )
+    connect_kwargs = {}
+    if settings.MONGODB_USE_TLS or settings.MONGODB_URL.startswith("mongodb+srv://"):
+        connect_kwargs["tlsCAFile"] = certifi.where()
+    client = AsyncIOMotorClient(settings.MONGODB_URL, **connect_kwargs)
     database = client.get_database("habittracker")
 
 

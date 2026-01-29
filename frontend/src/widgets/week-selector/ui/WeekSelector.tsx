@@ -104,7 +104,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
   })()
 
   return (
-    <div className="rounded-2xl border bg-card p-3 space-y-3">
+    <div className="rounded-[10px] border border-border/80 bg-card p-3 space-y-3">
       <div className="flex items-center justify-between">
         <Button
           variant="ghost"
@@ -116,7 +116,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
         </Button>
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-accent transition-colors"
+          className="flex items-center gap-2 px-3 py-2 rounded-[10px] hover:bg-accent/50 active:bg-accent transition-colors min-h-[44px]"
         >
           <Calendar className="h-4 w-4" />
           <span className="text-sm font-semibold">{getMonthRange()}</span>
@@ -141,7 +141,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
               key={day.toISOString()}
               onClick={() => handleDayClick(day)}
               className={cn(
-                'flex-1 flex flex-col items-center justify-center gap-1 py-3 px-1 rounded-2xl transition-all relative',
+                'flex-1 flex flex-col items-center justify-center gap-1 py-3 px-1 rounded-[10px] transition-colors relative min-h-[52px] active:opacity-90',
                 isSelected
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'hover:bg-accent',
@@ -185,7 +185,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
           setCalendarMonth(selectedDate)
         }
       }}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-sm rounded-[14px]">
           <DialogHeader>
             <div className="flex items-center justify-between">
               <DialogTitle>
@@ -292,7 +292,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
                       key={day.toISOString()}
                       onClick={() => handleCalendarDayClick(day)}
                       className={cn(
-                        'aspect-square flex items-center justify-center rounded-xl text-sm font-medium transition-all',
+                        'aspect-square flex items-center justify-center rounded-[10px] text-[15px] font-medium transition-colors min-w-[44px] min-h-[44px] active:opacity-90',
                         isSelected
                           ? 'bg-primary text-primary-foreground'
                           : isCurrentDay
@@ -318,7 +318,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
                     key={name}
                     onClick={() => handleMonthClick(date)}
                     className={cn(
-                      'py-3 px-4 rounded-xl text-sm font-medium transition-all',
+                      'py-3 px-4 rounded-[10px] text-[15px] font-medium transition-colors min-h-[44px] active:opacity-90',
                       isSelected
                         ? 'bg-primary text-primary-foreground'
                         : 'hover:bg-accent'
@@ -339,7 +339,7 @@ export function WeekSelector({ selectedDate, onDateChange, habits = [], checkins
                     key={year}
                     onClick={() => handleYearClick(year)}
                     className={cn(
-                      'py-3 px-4 rounded-xl text-sm font-medium transition-all',
+                      'py-3 px-4 rounded-[10px] text-[15px] font-medium transition-colors min-h-[44px] active:opacity-90',
                       isSelected
                         ? 'bg-primary text-primary-foreground'
                         : 'hover:bg-accent'
