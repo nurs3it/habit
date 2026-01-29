@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./backend/
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app/backend
 ENV PORT=8000
 
 EXPOSE 8000
