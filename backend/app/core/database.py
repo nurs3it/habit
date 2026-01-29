@@ -1,3 +1,4 @@
+import certifi
 from motor.motor_asyncio import AsyncIOMotorClient
 from typing import Optional
 from app.core.config import settings
@@ -8,7 +9,10 @@ database = None
 
 async def connect_to_mongo():
     global client, database
-    client = AsyncIOMotorClient(settings.MONGODB_URL)
+    client = AsyncIOMotorClient(
+        settings.MONGODB_URL,
+        tlsCAFile=certifi.where(),
+    )
     database = client.get_database("habittracker")
 
 
