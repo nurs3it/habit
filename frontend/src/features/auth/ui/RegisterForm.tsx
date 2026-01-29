@@ -4,7 +4,9 @@ import { useAppDispatch, useAppSelector } from '@shared/lib/hooks'
 import { register } from '@entities/user/model/userSlice'
 import { Button } from '@shared/ui/button'
 import { Input } from '@shared/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card'
+import { AuthLayout } from './AuthLayout'
+import { LoginHero } from './AuthHeroes'
+import { cn } from '@shared/lib/utils'
 
 export function RegisterForm() {
   const [email, setEmail] = useState('')
@@ -27,73 +29,137 @@ export function RegisterForm() {
     }
   }
 
+  const passwordsMismatch =
+    Boolean(password && confirmPassword) && password !== confirmPassword
+
+  const fadeStyle = (delay: string) => ({
+    animationDelay: delay,
+    opacity: 0,
+    animationFillMode: 'forwards' as const,
+  })
+
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Create account</CardTitle>
-        <CardDescription>Start your journey to better habits today</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="text-sm text-destructive">{error}</div>}
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium">
+    <AuthLayout
+      title="Create account"
+      description="Start your journey today. Build habits that stick, one step at a time."
+      hero={<LoginHero />}
+    >
+      <form
+        onSubmit={handleSubmit}
+        className={cn(
+          'flex flex-col flex-1 min-h-0',
+          'pb-[max(env(safe-area-inset-bottom),2rem)]'
+        )}
+      >
+        {error && (
+          <div
+            className="flex-shrink-0 mb-4 px-4 py-3 rounded-[10px] bg-destructive/10 text-destructive text-[15px] animate-auth-fade-in-up"
+            style={fadeStyle('0.25s')}
+            role="alert"
+          >
+            {error}
+          </div>
+        )}
+        {passwordsMismatch && (
+          <div
+            className="flex-shrink-0 mb-4 px-4 py-3 rounded-[10px] bg-destructive/10 text-destructive text-[15px] animate-auth-fade-in-up"
+            style={fadeStyle('0.25s')}
+            role="alert"
+          >
+            Passwords do not match
+          </div>
+        )}
+        <div className="flex-shrink-0 space-y-4">
+          <div
+            className="space-y-2 animate-auth-fade-in-up"
+            style={fadeStyle('0.3s')}
+          >
+            <label
+              htmlFor="register-email"
+              className="text-[15px] font-medium text-foreground"
+            >
               Email
             </label>
             <Input
-              id="email"
+              id="register-email"
               type="email"
+              inputMode="email"
+              autoComplete="email"
+              autoCapitalize="none"
+              autoCorrect="off"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium">
+          <div
+            className="space-y-2 animate-auth-fade-in-up"
+            style={fadeStyle('0.4s')}
+          >
+            <label
+              htmlFor="register-password"
+              className="text-[15px] font-medium text-foreground"
+            >
               Password
             </label>
             <Input
-              id="password"
+              id="register-password"
               type="password"
-              placeholder="••••••••"
+              autoComplete="new-password"
+              placeholder="Min 6 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
             />
           </div>
-          <div className="space-y-2">
-            <label htmlFor="confirmPassword" className="text-sm font-medium">
-              Confirm Password
+          <div
+            className="space-y-2 animate-auth-fade-in-up"
+            style={fadeStyle('0.5s')}
+          >
+            <label
+              htmlFor="register-confirm"
+              className="text-[15px] font-medium text-foreground"
+            >
+              Confirm password
             </label>
             <Input
-              id="confirmPassword"
+              id="register-confirm"
               type="password"
-              placeholder="••••••••"
+              autoComplete="new-password"
+              placeholder="Repeat password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            {password && confirmPassword && password !== confirmPassword && (
-              <p className="text-sm text-destructive">Passwords do not match</p>
-            )}
           </div>
-          <Button type="submit" className="w-full" disabled={loading || password !== confirmPassword}>
+        </div>
+        <div className="flex-1 min-h-[1.5rem]" />
+        <div
+          className="flex-shrink-0 space-y-4 pt-2 animate-auth-fade-in-up"
+          style={fadeStyle('0.6s')}
+        >
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full font-semibold"
+            disabled={loading || passwordsMismatch}
+          >
             {loading ? 'Creating account...' : 'Create account'}
           </Button>
-          <div className="text-center text-sm">
-            <span className="text-muted-foreground">Already have an account? </span>
+          <p className="text-center text-[15px] text-muted-foreground">
+            Already have an account?{' '}
             <button
               type="button"
               onClick={() => navigate('/login')}
-              className="text-primary hover:underline"
+              className="text-primary font-medium"
             >
               Sign in
             </button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+          </p>
+        </div>
+      </form>
+    </AuthLayout>
   )
 }

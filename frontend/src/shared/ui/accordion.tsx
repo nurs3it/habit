@@ -40,7 +40,7 @@ export const Accordion = React.forwardRef<
   
   return (
     <AccordionContext.Provider value={contextValue}>
-      <div className={cn('border rounded-2xl overflow-hidden', className)} data-state={open ? 'open' : 'closed'}>{children}</div>
+      <div className={cn('border rounded-[10px] overflow-hidden border-border/80', className)} data-state={open ? 'open' : 'closed'}>{children}</div>
     </AccordionContext.Provider>
   )
 })
